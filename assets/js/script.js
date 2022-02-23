@@ -55,6 +55,8 @@ var completeEditTask = function(taskName, taskType, taskId) {
         }
     };
 
+    saveTasks();
+
     alert("Task Updated!");
 
     formEl.removeAttribute("data-task-id");
@@ -64,7 +66,6 @@ var completeEditTask = function(taskName, taskType, taskId) {
 var taskStatusChangeHandler = function(event) {
     // get the task item's id
     var taskId = event.target.getAttribute("data-task-id");
-    console.log(taskId);
 
     //get the currently selected options' value and convert to lowercase
     var statusValue = event.target.value.toLowerCase();
@@ -87,7 +88,7 @@ var taskStatusChangeHandler = function(event) {
             tasks[i].status = statusValue;
         }
     }
-    console.log(tasks);
+    saveTasks();
 };
 
 var createTaskEl = function(taskDataObj) {
@@ -107,6 +108,8 @@ var createTaskEl = function(taskDataObj) {
     taskDataObj.id = taskIdCounter;
 
     tasks.push(taskDataObj);
+
+    saveTasks();
 
     var taskActionsEl = createTaskActions(taskIdCounter);
     listItemEl.appendChild(taskActionsEl);
@@ -207,6 +210,11 @@ var deleteTask = function(taskId) {
     }
     // reassin tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+    saveTasks();
+}
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 formEl.addEventListener("submit", taskFormHandler);
